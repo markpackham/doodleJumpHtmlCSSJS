@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const grid = document.querySelector(".grid");
   const doodler = document.createElement("div");
   let doodlerLeftSpace = 50;
-  let doodlerBottomSpace = 150;
+  let doodlerBottomSpace = 250;
   let platformCount = 5
   let platforms = []
   let isGameOver = false;
@@ -33,6 +33,27 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function movePlatforms() {
+    if (doodlerBottomSpace > 200) {
+        platforms.forEach(platform => {
+          platform.bottom -= 4
+          let visual = platform.visual
+          visual.style.bottom = platform.bottom + 'px'
+
+          if(platform.bottom < 10) {
+            let firstPlatform = platforms[0].visual
+            firstPlatform.classList.remove('platform')
+            platforms.shift()
+            console.log(platforms)
+            score++
+            var newPlatform = new Platform(600)
+            platforms.push(newPlatform)
+          }
+      }) 
+    }
+    
+  }
+
     // create game character
     function createDoodler() {
       grid.appendChild(doodler);
@@ -41,10 +62,17 @@ document.addEventListener("DOMContentLoaded", () => {
       doodler.style.bottom = doodlerBottomSpace + "px";
     }
 
+    function jump(){
+
+    }
+
   function start() {
     if (!isGameOver) {
       createDoodler();
       createPlatforms();
+      // drop platforms by 4px ever 50 mili seconds
+      setInterval(movePlatforms,50);
+      jump()
     }
   }
   start();
